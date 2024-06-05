@@ -1,2 +1,2 @@
-MVQA - Skylar Wang, Aidan Gibson
+MVQA - Skylar Wang, Aidan Gibson\
 VRC - Sebastian Orozco
