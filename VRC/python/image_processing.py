@@ -1,6 +1,6 @@
 import time
 import os
-from PIL import Image  # If you need to process images, Pillow can be used
+from PIL import Image 
 
 # Constants
 FPS = 20  # Frames per second
@@ -10,11 +10,11 @@ refresh_interval = 1  # Number of minutes until refresh
 folder_path = '/home/sebastian/omni.replicator_out/_output_test'
 
 def process_images(folder_path):
-    processed_count = 0  # Initialize the processed images counter
+    processed_count = 0  # Initialize processed images counter
     processed_files = []  # List to keep track of processed files
 
     while True:
-        # Step 1: Read all image files from the folder
+        # Step 1: Read all image files from folder
         files = os.listdir(folder_path)
         image_files = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
 
@@ -23,10 +23,9 @@ def process_images(folder_path):
             image_path = os.path.join(folder_path, image_file)
             print(f"Processing image: {image_path}")
             try:
-                # Open image (optional, only if you need to process them)
+                # Open image
                 with Image.open(image_path) as img:
-                    # Perform any processing on the image here
-                    pass  # Replace with your image processing code
+                    pass  # Replace with image processing code
 
                 # Track processed files
                 processed_files.append(image_path)
