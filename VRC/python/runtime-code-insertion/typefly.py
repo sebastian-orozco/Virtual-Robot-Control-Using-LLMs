@@ -74,7 +74,7 @@ my_kaya = my_world.scene.add(
 
 # SETUP CAMERA, RENDER PRODUCT
 camera = rep.create.camera(position=(0.84, 0, 0.08), rotation=(360, 0, 0), parent="/World/Kaya/base_link")
-# camera = rep.create.camera(position=(-21.1, 11.87, 20.83), rotation=(0, -90, 90), parent="/World")
+# camera = rep.create.camera(position=(-21.1, 11.87, 20.83), rotation=(0, -90, 90), parent="/World") <- for top camera in factory setting
 
 render_product = rep.create.render_product(camera, (512, 512))
 
@@ -205,13 +205,12 @@ relative_path = f'standalone_examples/api/omni.isaac.kaya/runtime-code-insertion
 instructions_file_path = os.path.join(os.getcwd(), relative_path)
 
 action_queue = parse_instructions(instructions_file_path)
-print(action_queue)
+# print(action_queue)
 
 
 # DEFINE MINISPEC WRAPPERS
 def move_forward(distance):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['move_forward']
 
@@ -242,7 +241,6 @@ def move_forward(distance):
 
 def move_backward(distance):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['move_backward']
 
@@ -273,7 +271,6 @@ def move_backward(distance):
 
 def move_left(distance):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['move_left']
 
@@ -304,7 +301,6 @@ def move_left(distance):
 
 def move_right(distance):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['move_right']
 
@@ -335,7 +331,6 @@ def move_right(distance):
 
 def turn_cw(degrees):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['turn_cw']
 
@@ -366,7 +361,6 @@ def turn_cw(degrees):
 
 def turn_c_cw(degrees):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['turn_c_cw']
 
@@ -397,7 +391,6 @@ def turn_c_cw(degrees):
 
 def delay(seconds):
     global current_action, t
-    # print('t = ', t)
     
     state = actions_state['delay']
 
@@ -473,12 +466,14 @@ def process_next_action():
 
 
 def check_for_new_instructions():
+    # open new instructions flag file
+
+    # overwrite file with F
+    # if new instruction, we want to update flag here
     global new_instructions_flag, action_queue
     if new_instructions_flag:
         new_actions = parse_instructions(instructions_file_path)
         action_queue.extend(new_actions)
-        print('just extended action queue')
-        print(action_queue)
         new_instructions_flag = False
 
 #=========================================================================================
@@ -492,7 +487,7 @@ def keyboard_event(event, *args, **kwargs):
             print(simulation_context.current_time)
         if event.input == carb.input.KeyboardInput.N:
             new_instructions_flag = True
-            print(' setting flag to true ')
+
 
 # # Subscribe to keyboard event
 appwindow = get_default_app_window()
@@ -506,16 +501,6 @@ wall_time_start = 0.0
 ready = False
 while simulation_app.is_running():
     my_world.step(render=True)
-
-    if (ready == False and t > 0.0):
-        ready = True
-        directory = os.path.expanduser("~/.local/share/ov/pkg/isaac-sim-4.0.0/standalone_examples/api/omni.isaac.kaya/")
-        file_path = os.path.join(directory, 'runtime-code-insertion/IO/flags.txt')
-        with open(file_path, 'w') as file:
-            file.write("Ready")
-        time.sleep(5)
-        with open(file_path, 'w') as file:
-            file.write("")
 
     if my_world.is_stopped() and not reset_needed:
         reset_needed = True
@@ -535,7 +520,7 @@ while simulation_app.is_running():
         check_for_new_instructions()
 
         if not process_next_action():
-            # my_world.stop()
+            # my_world.stop() <- could replace with my_world.pause() to conserve resources, calling .play() only when new actions received
             my_kaya.apply_wheel_actions(my_controller.forward(command=[0.0, 0.0, 0.0]))
 
 simulation_app.close()
