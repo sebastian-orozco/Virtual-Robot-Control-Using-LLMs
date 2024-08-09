@@ -10,7 +10,7 @@
 from isaacsim import SimulationApp
 
 # Initialize the simulation application with headless mode set to False
-simulation_app = SimulationApp({"headless": False})
+simulation_app = SimulationApp({"headless": False}) # add clarifying comment about purpose/ meaning of headless
 
 import os
 import time
