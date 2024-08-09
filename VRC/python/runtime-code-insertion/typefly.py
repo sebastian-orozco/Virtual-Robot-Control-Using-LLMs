@@ -41,7 +41,7 @@ else:
 # Create the simulation world with the specified units and desired rendering frequency
 my_world = World(stage_units_in_meters=1.0)
 simulation_context = SimulationContext()
-simulation_context.set_simulation_dt(physics_dt=1.0 / SPEED, rendering_dt=1.0 / FPS)
+simulation_context.set_simulation_dt(physics_dt=1.0 / SPEED, rendering_dt=1.0 / FPS) # <- test changing speed at runtime once back in person
 
 
 # Initialize starting location of robot
