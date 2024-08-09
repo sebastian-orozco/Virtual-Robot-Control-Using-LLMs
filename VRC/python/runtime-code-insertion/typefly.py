@@ -9,6 +9,7 @@
 
 from isaacsim import SimulationApp
 
+# Initialize the simulation application with headless mode set to False
 simulation_app = SimulationApp({"headless": False})
 
 import os
@@ -30,33 +31,27 @@ from omni.appwindow import get_default_app_window
 from parameters import FPS, OUTPUT_DIR, SPEED, INSTRUCTIONS
 
 
-# SET PATHS FOR RENDERING CONFIG, BASE SCENE & PROP
-# FPS = 20.0
-# REFRESH_INTERVAL = 1
+# Set paths for rendering configuration, base scene, and prop
 if False:
-    BASE_SCENE_PATH = "/home/sebastian/Documents/Virtual-Robot-Control-Using-LLMs/YECL-S24/VRC/demo.usd"
+    BASE_SCENE_PATH = "/home/sebastian/Documents/Virtual-Robot-Control-Using-LLMs/YECL-S24/VRC/demo.usd" # <- demo factory scenario
 else:
     BASE_SCENE_PATH = None
-# BASE_PROP_PATH = "/Isaac/Environments/Simple_Warehouse/Props/SM_CardBoxA_01"
 
 
-# CREATE WORLD
+# Create the simulation world with the specified units and desired rendering frequency
 my_world = World(stage_units_in_meters=1.0)
-
 simulation_context = SimulationContext()
-
 simulation_context.set_simulation_dt(physics_dt=1.0 / SPEED, rendering_dt=1.0 / FPS)
 
 
-# CREATE KAYA ROBOT
+# Initialize starting location of robot
+ROBOT_START_POSITION = np.array([0.0, 0.0, 0.0])
+ROBOT_START_ORIENTATION = rot_utils.euler_angles_to_quats(np.array([0.0, 0.0, 180.0]), degrees=True)
+
+# Define the path to the Kaya robot's USD file and add the robot to the world
 assets_root_path = get_assets_root_path()
 if assets_root_path is None:
     carb.log_error("Could not find Isaac Sim assets folder")
-
-# ROBOT_START_POSITION = np.array([-25.001, 7.492, 0.02])
-ROBOT_START_POSITION = np.array([0.0, 0.0, 0.0])
-
-ROBOT_START_ORIENTATION = rot_utils.euler_angles_to_quats(np.array([0.0, 0.0, 180.0]), degrees=True)
 
 kaya_asset_path = assets_root_path + "/Isaac/Robots/Kaya/kaya.usd"
 my_kaya = my_world.scene.add(
@@ -72,23 +67,19 @@ my_kaya = my_world.scene.add(
 )
 
 
-# SETUP CAMERA, RENDER PRODUCT
+# Set up the camera and render product for the simulation
 camera = rep.create.camera(position=(0.84, 0, 0.08), rotation=(360, 0, 0), parent="/World/Kaya/base_link")
-# camera = rep.create.camera(position=(-21.1, 11.87, 20.83), rotation=(0, -90, 90), parent="/World") <- for top camera in factory setting
-
 render_product = rep.create.render_product(camera, (512, 512))
 
 
-# ADD SCENE TO WORLD
-# (Not necessary if scene has been defined.)
+# Add the scene to the world or a default ground plane if no scene is defined
 if not BASE_SCENE_PATH:
     my_world.scene.add_default_ground_plane() 
 else:
-    # setting = add_reference_to_stage(usd_path=(assets_root_path + BASE_SCENE_PATH), prim_path="/World")
     setting = add_reference_to_stage(usd_path=(BASE_SCENE_PATH), prim_path="/World")
 
 
-# SETUP CONTROLLER FOR KAYA ROBOT
+# Set up the controller for the Kaya robot
 kaya_setup = HolonomicRobotUsdSetup(
     robot_prim_path=my_kaya.prim_path, com_prim_path="/World/Kaya/base_link/control_offset"
 )
@@ -112,16 +103,15 @@ my_controller = HolonomicController(
 )
 
 
-# SETUP WRITER
+# Set up a writer to capture the simulation output
 writer = rep.WriterRegistry.get("BasicWriter")
 writer.initialize(output_dir=OUTPUT_DIR, rgb=True, frame_padding=6, image_output_format="jpeg")
-# writer.initialize(output_dir=OUTPUT_DIR, distance_to_camera=True, colorize_depth=True)
+# writer.initialize(output_dir=OUTPUT_DIR, distance_to_camera=True, colorize_depth=True) # <- if depth data is desired over camera data
 writer.attach([render_product])
-# rep.orchestrator.preview()
 
-# INITIALIZE BEFORE SIMULATION
-t = 0.0 # sim time
-i = 0   # sim steps
+
+# Initialize simulation variables
+t = 0.0 # Simulation time
 
 reset_needed = False
 physics_dt = 0.0
@@ -134,7 +124,7 @@ degrees_per_second = 16.0
 # RUNTIME CODE INSERTION
 #=========================================================================================
 
-# Global state for actions
+# Define global state for actions
 actions_state = {
     'move_forward': {'done': False, 'time_end': 0.0},
     'move_backward': {'done': False, 'time_end': 0.0},
@@ -149,11 +139,10 @@ actions_state = {
 }
 
 
-# Global flag to indicate new instructions have been added
+# Global flag to indicate whether new instructions have been added
 new_instructions_flag = False
-# last_parsed_line = 0
 
-
+# Function to parse Minispec command instructions from a file
 def parse_instructions(file_path):
     action_list = []
     with open(file_path, 'r') as file:
@@ -201,14 +190,17 @@ def parse_instructions(file_path):
     return action_list
 
 
+# Load and parse instructions from the specified file 
+# TODO: update this to not be hardcoded
 relative_path = f'standalone_examples/api/omni.isaac.kaya/runtime-code-insertion/instructions/{INSTRUCTIONS}'
 instructions_file_path = os.path.join(os.getcwd(), relative_path)
 
+
+# Get list of actions to perform
 action_queue = parse_instructions(instructions_file_path)
-# print(action_queue)
 
 
-# DEFINE MINISPEC WRAPPERS
+# Define Minispec wrappers
 def move_forward(distance):
     global current_action, t
     
@@ -419,12 +411,14 @@ def delay(seconds):
             return False  # Action not complete
         
 
+# Reset the state of an action to its initial state
 def reset_action_state(action):
     global actions_state
     actions_state[action]['done'] = False
     actions_state[action]['time_end'] = 0.0
 
 
+# Process the next action in the queue
 def process_next_action():
     global action_queue
 
@@ -465,9 +459,10 @@ def process_next_action():
     return True
 
 
+# Check for new instructions and update the action queue
 def check_for_new_instructions():
     # open new instructions flag file
-
+    # TODO: fix this to be in-line with expected behavior of minispec
     # overwrite file with F
     # if new instruction, we want to update flag here
     global new_instructions_flag, action_queue
@@ -477,9 +472,8 @@ def check_for_new_instructions():
         new_instructions_flag = False
 
 #=========================================================================================
-
-# DEFINE FUNCTION TO TRIGGER TIME REPORT
-
+  
+# Define a function to handle keyboard events
 def keyboard_event(event, *args, **kwargs):
     global new_instructions_flag
     if event.type == carb.input.KeyboardEventType.KEY_PRESS:
@@ -496,7 +490,7 @@ input.subscribe_to_keyboard_events(appwindow.get_keyboard(), keyboard_event)
 
 my_world.reset()
 
-# RUN SIMULATION
+# Main simulation loop
 wall_time_start = 0.0
 ready = False
 while simulation_app.is_running():
@@ -520,7 +514,6 @@ while simulation_app.is_running():
         check_for_new_instructions()
 
         if not process_next_action():
-            # my_world.stop() <- could replace with my_world.pause() to conserve resources, calling .play() only when new actions received
-            my_kaya.apply_wheel_actions(my_controller.forward(command=[0.0, 0.0, 0.0]))
+            my_kaya.apply_wheel_actions(my_controller.forward(command=[0.0, 0.0, 0.0])) # <- no movement by default
 
 simulation_app.close()
