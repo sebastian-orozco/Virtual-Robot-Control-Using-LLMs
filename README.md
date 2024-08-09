@@ -12,6 +12,8 @@ First make sure you have both TypeFly and the NVIDIA Isaac Sim installed and con
 Then, cd into the **TypeFly** directory and update the `virtual_robot_wrapper.py` file to match the version in this repository. 
 Next, cd into the **isaac-sim-4.0.0** directory and download the `runtime-code-insertion` folder from this repository into this directory. 
 
+# TODO: SPECIFY METHOD OF INSTALLING ISAAC SIM
+
 ### Step 2: Pre-define your scenario
 In `typefly.py`, update the **BASE_SCENE_PATH** variable to be the path to the .usd file containing your pre-built scenario that you would like to test the robot in. 
 By default, VeriFly uses the NVIDIA Kaya robot car. Future support will be added for other robots. Additionally, VeriFly's camera data is produced from the perspective of a camera mounted onto the Kaya robot. If you would like to instead simulate an eye-level perspective, you can adjust the y-value of the camera's position. Please note that the camera will still be affixed to the Kaya robot and continue to move with the robot, even if it is not physically adjacent. 
