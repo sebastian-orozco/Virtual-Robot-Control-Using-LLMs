@@ -27,7 +27,7 @@ In the terminal, run the command `(cd /path/to/isaac-sim-4.0.0 && ./python.sh ty
 
 *** TODO: INCLUDE DESCRIPTION FOR MEANING OF EACH FILE IN FOLDER AS NEW SECTION. ***
 
-# Code Strcuture
+## Code Strcuture
 ```
  |-- SimFly                    // codes for xxxxx
     |-- virtual_robot_wrapper.py // code for xx
