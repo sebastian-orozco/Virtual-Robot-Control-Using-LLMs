@@ -26,3 +26,12 @@ In the terminal, run the command `(cd /path/to/isaac-sim-4.0.0 && ./python.sh ty
 *** ^^^ TODO: ADD MORE DETAILS ABOUT PROCEDURE, INCLUDING ABOUT THE TYPEFLY.PY FILE. CHANGE NAME OF TYPEFLY.PY FILE (TO AVOID CONFUSION), PERHAPS TYPE_SIMULATOR.PY. ADD INT_MAIN TO BOTTOM OF TYPEFLY.PY. CREATE OWN .SH FILE TO SIMPLIFY LAUNCHING PROCESS AND MAKE IT MORE ELEGANT. ***
 
 *** TODO: INCLUDE DESCRIPTION FOR MEANING OF EACH FILE IN FOLDER AS NEW SECTION. ***
+
+# Code Strcuture
+```
+ |-- SimFly                    // codes for xxxxx
+    |-- virtual_robot_wrapper.py // code for xx
+    |-- instructions.txt // file for xx
+
+ |-- VRC                    // codes for xxxxx
+*** TODO: Fill code structure here. ***
