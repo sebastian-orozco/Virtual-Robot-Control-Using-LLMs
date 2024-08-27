@@ -14,8 +14,9 @@ HEADLESS = False
 AUTOPLAY = True
 
 
-# Define scene
-# > Example: BASE_SCENE_PATH = "/home/sebastian/Documents/Virtual-Robot-Control-Using-LLMs/YECL-S24/VRC/demo.usd"
+# Define scene 
+# Scene can be any scenario or environment in the form of a .usd or Universal Scene Description file. 
+# > Example: BASE_SCENE_PATH = "/home/sebastian/Documents/demo.usd"
 BASE_SCENE_PATH = None
 
 
