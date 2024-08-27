@@ -15,8 +15,8 @@ AUTOPLAY = True
 
 
 # Define scene
+# > Example: BASE_SCENE_PATH = "/home/sebastian/Documents/Virtual-Robot-Control-Using-LLMs/YECL-S24/VRC/demo.usd"
 BASE_SCENE_PATH = None
-# Example: BASE_SCENE_PATH = "/home/sebastian/Documents/Virtual-Robot-Control-Using-LLMs/YECL-S24/VRC/demo.usd"
 
 
 # Define intial position and rotation of the robot
