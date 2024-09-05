@@ -1,17 +1,15 @@
-# Virtual Robot Control Using LLMs
+# SimFly
 Author: Sebastian Orozco\
-Mentors: Neiwen Ling, Guojun Chen
-** Change title to VritualFly or SimFly? **
+Mentors: Neiwen Ling, Guojun Chen, Lin Zhong
 
 ## Description
-This project connects [TypeFly](https://github.com/typefly/TypeFly) with the [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) to provide an opportunity to test the performance of LLM-controlled robots in simulated environments. This project allows users to interact with the [NVIDIA Kaya robot](https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_robots.html) through the TypeFly UI, where English instructions are interpreted by a LLM in order to control the movement of the Kaya robot in a user-defined simulated scene. 
+This project connects [TypeFly](https://github.com/typefly/TypeFly) with the [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) to provide an opportunity to test the performance of LLM-controlled robots in simulated environments. This project allows users to interact with the [NVIDIA Kaya robot](https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_robots.html) through the TypeFly UI, where English instructions are interpreted by a LLM in order to control the movement of the Kaya robot in a user-defined simulated scene. This project was completed as the capstone for my summer internship with the Yale Efficient Computing Lab. 
 
 ## How to get started?
 ### Step 1: Setup your environment
 First make sure you have both TypeFly and the NVIDIA Isaac Sim installed and configured on your computer. To download and install TypeFly, you can follow the instructions [here](https://github.com/typefly/TypeFly). To download and install the Isaac Sim, first ensure that your computer meets the minimum specifications as listed [here](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/requirements.html). Then, follow the steps for "Workstation Installation" as described [here](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_workstation.html). 
 After completing the install of TypeFly, cd into the **TypeFly** directory and update the `virtual_robot_wrapper.py` file to match the version in this repository.
-Next, cd into the **isaac-sim-4.0.0** directory and download the `VRC` folder from this repository into this directory. 
-** Add an example of dic path, may be issac-sim-4.0.0/VRC ? **
+Next, cd into the **isaac-sim-4.0.0** directory and download the `VRC` folder from this repository into this directory. After completing this action, the directory path to VRC should look like **isaac-sim-4.0.0/VRC**.
 
 ### Step 2: Define your scenario
 In `parameters.py`, update the **BASE_SCENE_PATH** variable to be the path to the .usd file containing your pre-built scenario that you would like to test the robot in. 
