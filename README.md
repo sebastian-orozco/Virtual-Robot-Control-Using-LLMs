@@ -3,7 +3,7 @@ Author: Sebastian Orozco\
 Mentors: Neiwen Ling, Guojun Chen, Lin Zhong
 
 ## Description
-This project connects [TypeFly](https://github.com/typefly/TypeFly) with the [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) to provide an opportunity to test the performance of LLM-controlled robots in simulated environments. This project allows users to interact with the [NVIDIA Kaya robot](https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_robots.html) through the TypeFly UI, where English instructions are interpreted by a LLM in order to control the movement of the Kaya robot in a user-defined simulated scene. This project was completed as the capstone for my summer internship with the Yale Efficient Computing Lab. 
+SimFly is an extension of [TypeFly](https://typefly.github.io/) for controlling simulated robots using large-language models. This project connects [TypeFly](https://github.com/typefly/TypeFly) with the [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) to provide an opportunity to test the performance of LLM-controlled robots in simulated environments. This project allows users to interact with the [NVIDIA Kaya robot](https://docs.omniverse.nvidia.com/isaacsim/latest/features/environment_setup/assets/usd_assets_robots.html) through the TypeFly UI, where English instructions are interpreted by a LLM in order to control the movement of the Kaya robot in a user-defined simulated scene. This project was completed as the capstone for my summer internship with the Yale Efficient Computing Lab. 
 
 ## How to get started?
 ### Step 1: Setup your environment
